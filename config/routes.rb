@@ -49,21 +49,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :binance_items, only: [ :index, :new, :create, :show, :edit, :update, :destroy ] do
-    collection do
-      get :select_accounts
-      post :link_accounts
-      get :select_existing_account
-      post :link_existing_account
-    end
-
-    member do
-      post :sync
-      get :setup_accounts
-      post :complete_account_setup
-    end
-  end
-
   resources :snaptrade_items, only: [ :index, :new, :create, :show, :edit, :update, :destroy ] do
     collection do
       get :preload_accounts
@@ -289,10 +274,6 @@ Rails.application.routes.draw do
   namespace :transactions do
     resource :bulk_deletion, only: :create
     resource :bulk_update, only: %i[new create]
-    resource :categorize, only: %i[show create] do
-      patch :assign_entry, on: :collection
-      get :preview_rule, on: :collection
-    end
   end
 
   resources :transactions, only: %i[index new create show update destroy] do
@@ -419,6 +400,7 @@ Rails.application.routes.draw do
       # Production API endpoints
       resources :accounts, only: [ :index, :show ]
       resources :categories, only: [ :index, :show ]
+      resources :budget_categories, only: [ :index, :show 
       resources :merchants, only: %i[index show]
       resources :tags, only: %i[index show create update destroy]
 
